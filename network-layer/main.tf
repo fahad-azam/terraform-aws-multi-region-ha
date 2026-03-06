@@ -1,5 +1,5 @@
 module "network" {
-    source = "./modules/network/"
+    source = "../modules/network"
 
     primary_vpc_name   = var.primary_vpc_name
     primary_vpc_cidr   = var.primary_vpc_cidr
