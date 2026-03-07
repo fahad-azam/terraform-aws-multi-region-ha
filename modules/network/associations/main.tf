@@ -14,7 +14,7 @@ resource "aws_route_table_association" "primary" {
 resource "aws_route_table_association" "standby" {
   for_each = var.standby_vpc_subnet
 
-  provider = aws.standby_region_aws
+  provider  = aws.standby_region_aws
   subnet_id = each.value.id
 
   # Logic: If public IP on launch is true, use the "public" RT, else "private"
