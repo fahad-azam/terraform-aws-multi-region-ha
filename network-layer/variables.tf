@@ -1,3 +1,7 @@
+variable "project_name" {
+  description = "Enter project name to be used as prefix for all resources"
+    type        = string
+}
 variable "primary_region_aws" {
     description = "Primary Region to deploy active instaces"
     type = string
