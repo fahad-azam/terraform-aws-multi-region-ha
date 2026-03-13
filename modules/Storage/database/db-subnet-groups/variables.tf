@@ -12,3 +12,4 @@ variable "standby_region_aws" {
   description = "Enter the AWS region for the standby region"
   type        = string
 }
+

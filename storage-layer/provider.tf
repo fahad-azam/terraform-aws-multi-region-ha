@@ -14,3 +14,4 @@ provider "aws" {
     tags = merge(local.common_tags, { RegionRole = "standby" })
   }
 }
+provider "vault" {}

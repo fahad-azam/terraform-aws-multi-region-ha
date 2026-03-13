@@ -17,3 +17,21 @@ variable "standby_region_aws" {
   description = "Standby Region to deploy secondary instaces"
   type        = string
 }
+variable "db_params" {
+  description = "Complete RDS configuration object"
+  type = object({
+    project_name         = string
+    instance_name        = string
+    engine               = string
+    engine_version       = string
+    instance_class       = string
+    allocated_storage    = number
+    max_storage          = number
+    storage_type         = string
+    db_name              = string
+    username             = string    
+    parameter_group_name = string
+    enable_multi_az      = bool
+
+  })
+}
