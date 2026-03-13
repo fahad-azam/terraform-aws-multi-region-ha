@@ -1,5 +1,5 @@
-module "storage" {
-  source = "../modules/Storage"
+module "db_subnet_groups" {
+  source = "./db-subnet-groups"
 
   project_name        = var.project_name
   primary_region_aws  = var.primary_region_aws

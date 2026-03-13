@@ -1,5 +1,5 @@
-module "storage" {
-  source = "../modules/Storage"
+module "database" {
+  source = "./database"
 
   project_name        = var.project_name
   primary_region_aws  = var.primary_region_aws

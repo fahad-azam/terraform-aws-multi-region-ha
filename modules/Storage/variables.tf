@@ -17,4 +17,3 @@ variable "standby_region_aws" {
   description = "Standby Region to deploy secondary instaces"
   type        = string
 }
-

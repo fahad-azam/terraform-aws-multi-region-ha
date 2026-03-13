@@ -1,4 +1,10 @@
 locals {
-  state_bucket = "azam-tfstate-storage-2026"
-  network_key  = "enterprise/network/terraform.tfstate"
+  common_tags = merge(
+    {
+      Project   = var.project_name
+      ManagedBy = "Terraform"
+      Layer     = "network"
+    },
+    var.additional_tags
+  )
 }
