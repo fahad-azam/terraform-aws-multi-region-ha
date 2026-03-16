@@ -50,5 +50,11 @@ variable "db_params" {
     condition     = var.db_params.max_storage >= var.db_params.allocated_storage
     error_message = "Max storage must be greater than or equal to allocated storage."
   }
+  
 
+}
+variable "environment" {
+  description = "Deployment environment (e.g., dev, staging, prod)"
+  type        = string
+  
 }

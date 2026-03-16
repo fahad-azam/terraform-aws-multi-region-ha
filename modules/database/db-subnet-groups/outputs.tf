@@ -18,12 +18,12 @@ output "standby_db_subnet_group_arn" {
   value       = aws_db_subnet_group.standby.arn
 }
 
-output "primary_subnet_ids_used" {
-  description = "The specific subnet IDs filtered for the primary group"
-  value       = aws_db_subnet_group.primary.subnet_ids
-}
+# output "primary_subnet_ids_used" {
+#   description = "The specific subnet IDs filtered for the primary group"
+#   value       = aws_db_subnet_group.primary.subnet_ids
+# }
 
-output "standby_subnet_ids_used" {
-  description = "The specific subnet IDs filtered for the standby group"
-  value       = aws_db_subnet_group.standby.subnet_ids
-}
+# output "standby_subnet_ids_used" {
+#   description = "The specific subnet IDs filtered for the standby group"
+#   value       = aws_db_subnet_group.standby.subnet_ids
+# }

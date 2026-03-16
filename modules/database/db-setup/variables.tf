@@ -1,20 +1,14 @@
 variable "project_name" {
-  description = "Enter project name to be used as prefix for all resources"
   type        = string
+  description = "Project name for SSM paths"
 }
-variable "additional_tags" {
-  description = "Additional AWS tags to apply on top of the default tag set"
-  type        = map(string)
-  default     = {}
-}
-
 variable "primary_region_aws" {
-  description = "Primary Region to deploy active instaces"
+  description = "Enter the AWS region for the primary region"
   type        = string
 }
 
 variable "standby_region_aws" {
-  description = "Standby Region to deploy secondary instaces"
+  description = "Enter the AWS region for the standby region"
   type        = string
 }
 
@@ -32,6 +26,15 @@ variable "db_params" {
     db_name              = string
     username             = string    
     parameter_group_name = string
-    enable_multi_az      = bool 
+    enable_multi_az      = bool
+
   })
+}
+
+variable "primary_db_subnet_group_name" {
+  type = string
+}
+
+variable "standby_db_subnet_group_name" {
+  type = string
 }
