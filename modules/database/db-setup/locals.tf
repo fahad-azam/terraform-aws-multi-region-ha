@@ -9,6 +9,4 @@ locals {
     for region in local.db_regions :
     region => "/${var.project_name}/network/${region}/private_sg_id"
   }
-  environment = "production"
-  
 }

@@ -18,15 +18,7 @@ output "standby_db_subnet_group_arn" {
   value       = module.db_subnet_groups.standby_db_subnet_group_arn
 }
 
-# output "primary_subnet_ids_used" {
-#   description = "The specific subnet IDs filtered for the primary group"
-#   value       = module.db_subnet_groups.primary_db_subnet_group.subnet_ids
-# }
 
-# output "standby_subnet_ids_used" {
-#   description = "The specific subnet IDs filtered for the standby group"
-#   value       = module.db_subnet_groups.standby_db_subnet_group.subnet_ids
-# }
 output "primary_db_instance_id" {
   description = "Identifier of the primary RDS instance"
   value       = module.db-setup.primary_db_instance_id

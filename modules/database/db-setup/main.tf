@@ -1,5 +1,5 @@
 data "vault_generic_secret" "rds_creds" {
-  path = "secret/${var.project_name}/${local.environment}/rds"
+  path = "secret/${var.project_name}/${var.environment}/rds"
 }
 
 # --- Primary RDS Instance ---
@@ -29,7 +29,6 @@ resource "aws_db_instance" "primary" {
 
   tags = {
     Name        = "${var.db_params.instance_name}-primary"
-    Environment = "production"
     Project     = var.db_params.project_name
   }
 }
@@ -50,7 +49,6 @@ resource "aws_db_instance" "standby" {
 
   tags = {
     Name        = "${var.db_params.instance_name}-standby"
-    Environment = "production"
     Project     = var.db_params.project_name
   }
 }

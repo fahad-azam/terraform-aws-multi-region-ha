@@ -29,7 +29,7 @@ resource "aws_ssm_parameter" "primary_db_port" {
 
 # --- Standby RDS SSM Parameters ---
 resource "aws_ssm_parameter" "standby_db_id" {
-  provider = aws.standby_region_aws
+  
   name     = "/${var.project_name}/${local.environment}/rds/standby/instance_id"
   type     = "String"
   value    = module.database.standby_db_instance_id
@@ -37,7 +37,7 @@ resource "aws_ssm_parameter" "standby_db_id" {
 }
 
 resource "aws_ssm_parameter" "standby_db_arn" {
-  provider = aws.standby_region_aws
+ 
   name     = "/${var.project_name}/${local.environment}/rds/standby/arn"
   type     = "String"
   value    = module.database.standby_db_instance_arn
@@ -45,7 +45,7 @@ resource "aws_ssm_parameter" "standby_db_arn" {
 }
 
 resource "aws_ssm_parameter" "standby_db_endpoint" {
-  provider = aws.standby_region_aws
+  
   name     = "/${var.project_name}/${local.environment}/rds/standby/endpoint"
   type     = "String"
   value    = module.database.standby_db_endpoint
@@ -53,7 +53,7 @@ resource "aws_ssm_parameter" "standby_db_endpoint" {
 }
 
 resource "aws_ssm_parameter" "standby_db_port" {
-  provider = aws.standby_region_aws
+  
   name     = "/${var.project_name}/${local.environment}/rds/standby/port"
   type     = "String"
   value    = module.database.standby_db_port

@@ -17,6 +17,12 @@ variable "standby_region_aws" {
   description = "Standby Region to deploy secondary instaces"
   type        = string
 }
+
+variable "environment" {
+  description = "Normalized deployment environment name"
+  type        = string
+}
+
 variable "db_params" {
   description = "Complete RDS configuration object"
   type = object({
