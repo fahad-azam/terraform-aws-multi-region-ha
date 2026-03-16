@@ -2,6 +2,10 @@ variable "project_name" {
   type        = string
   description = "Project name for SSM paths"
 }
+variable "environment" {
+  type        = string
+  description = "Deployment environment for SSM paths"  
+}
 variable "primary_region_aws" {
   description = "Enter the AWS region for the primary region"
   type        = string
@@ -9,11 +13,6 @@ variable "primary_region_aws" {
 
 variable "standby_region_aws" {
   description = "Enter the AWS region for the standby region"
-  type        = string
-}
-
-variable "environment" {
-  description = "Normalized deployment environment name"
   type        = string
 }
 

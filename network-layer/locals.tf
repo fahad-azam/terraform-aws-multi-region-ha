@@ -7,4 +7,5 @@ locals {
     },
     var.additional_tags
   )
+  environment = lower(var.environment)
 }

@@ -5,8 +5,11 @@
   # since we are using the same key "private_sg_id" for both regions, we can simplify the construction
 locals {
   db_regions = ["primary", "standby"]
+  environment = lower(var.environment)
   sg_ssm_paths = {
     for region in local.db_regions :
-    region => "/${var.project_name}/network/${region}/private_sg_id"
+    region => "/${var.project_name}/${local.environment}/network/${region}/private_sg_id"
   }
+
 }
+

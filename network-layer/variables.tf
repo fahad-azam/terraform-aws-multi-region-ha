@@ -2,6 +2,10 @@ variable "project_name" {
   description = "Enter project name to be used as prefix for all resources"
   type        = string
 }
+variable "environment" {
+  description = "Enter environment name to be used as prefix for all resources"
+  type        = string
+}
 
 variable "additional_tags" {
   description = "Additional AWS tags to apply on top of the default tag set"

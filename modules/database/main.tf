@@ -4,6 +4,7 @@ module "db_subnet_groups" {
   project_name        = var.project_name
   primary_region_aws  = var.primary_region_aws
   standby_region_aws  = var.standby_region_aws
+  environment         = var.environment
 
   providers = {
     aws                    = aws
