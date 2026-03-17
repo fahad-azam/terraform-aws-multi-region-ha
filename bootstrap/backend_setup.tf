@@ -1,7 +1,7 @@
 # 1. The S3 Bucket to hold the State File
 resource "aws_s3_bucket" "terraform_state" {
-  
-  bucket = "azam-tfstate-storage-2026" 
+
+  bucket = "azam-tfstate-storage-2026"
 
   # This prevents Terraform from accidentally deleting the bucket
   lifecycle {

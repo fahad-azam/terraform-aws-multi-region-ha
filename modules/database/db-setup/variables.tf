@@ -4,7 +4,7 @@ variable "project_name" {
 }
 variable "environment" {
   type        = string
-  description = "Deployment environment for SSM paths"  
+  description = "Deployment environment for SSM paths"
 }
 variable "primary_region_aws" {
   description = "Enter the AWS region for the primary region"
@@ -28,7 +28,7 @@ variable "db_params" {
     max_storage          = number
     storage_type         = string
     db_name              = string
-    username             = string    
+    username             = string
     parameter_group_name = string
     enable_multi_az      = bool
 

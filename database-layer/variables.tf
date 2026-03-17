@@ -29,11 +29,11 @@ variable "db_params" {
     max_storage          = number
     storage_type         = string
     db_name              = string
-    username             = string    
+    username             = string
     parameter_group_name = string
     enable_multi_az      = bool
   })
-# Validation for Instance Name
+  # Validation for Instance Name
   validation {
     condition     = can(regex("^[a-z][a-z0-9-]*$", var.db_params.instance_name))
     error_message = "The instance_name must start with a letter and contain only lowercase alphanumeric characters or hyphens."
@@ -50,11 +50,11 @@ variable "db_params" {
     condition     = var.db_params.max_storage >= var.db_params.allocated_storage
     error_message = "Max storage must be greater than or equal to allocated storage."
   }
-  
+
 
 }
 variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)"
   type        = string
-  
+
 }

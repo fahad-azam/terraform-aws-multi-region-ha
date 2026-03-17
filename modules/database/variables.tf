@@ -35,7 +35,7 @@ variable "db_params" {
     max_storage          = number
     storage_type         = string
     db_name              = string
-    username             = string    
+    username             = string
     parameter_group_name = string
     enable_multi_az      = bool
 

@@ -4,8 +4,8 @@ terraform {
 
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.0" # Matches your 6.36.0
+      source                = "hashicorp/aws"
+      version               = "~> 6.0" # Matches your 6.36.0
       configuration_aliases = [aws.standby_region_aws]
     }
     vault = {

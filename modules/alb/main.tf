@@ -1,9 +1,9 @@
 module "load_balancer" {
   source = "./load-balancer"
 
-  project_name    = var.project_name
-  environment     = var.environment
-  common_tags     = var.common_tags
+  project_name = var.project_name
+  environment  = var.environment
+  common_tags  = var.common_tags
   providers = {
     aws                    = aws
     aws.standby_region_aws = aws.standby_region_aws
@@ -13,9 +13,9 @@ module "load_balancer" {
 module "target_group" {
   source = "./target-groups"
 
-  project_name        = var.project_name
-  environment         = var.environment
-  
+  project_name = var.project_name
+  environment  = var.environment
+
   common_tags         = var.common_tags
   target_group_config = var.target_group_config
 
