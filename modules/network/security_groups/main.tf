@@ -10,6 +10,12 @@ resource "aws_security_group" "primary_private_sg" {
 
 }
 
+resource "aws_security_group" "primary_application_sg" {
+  vpc_id      = var.vpc_id["primary"]
+  name        = var.primary_application_sg_name
+  description = "Application security group for primary region"
+}
+
 resource "aws_security_group" "standby_public_sg" {
   provider    = aws.standby_region_aws
   vpc_id      = var.vpc_id["standby"]
@@ -21,4 +27,11 @@ resource "aws_security_group" "standby_private_sg" {
   vpc_id      = var.vpc_id["standby"]
   name        = var.standby_private_sg_name
   description = "Private security group for standby region"
+}
+
+resource "aws_security_group" "standby_application_sg" {
+  provider    = aws.standby_region_aws
+  vpc_id      = var.vpc_id["standby"]
+  name        = var.standby_application_sg_name
+  description = "Application security group for standby region"
 }

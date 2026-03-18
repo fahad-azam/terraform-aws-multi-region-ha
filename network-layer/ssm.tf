@@ -60,8 +60,21 @@ resource "aws_ssm_parameter" "primary_private_sg_id" {
   type  = "String"
   value = module.network.primary_private_sg_id
 }
+
+resource "aws_ssm_parameter" "primary_application_sg_id" {
+  name  = "/${var.project_name}/${local.environment}/network/primary/application_sg_id"
+  type  = "String"
+  value = module.network.primary_application_sg_id
+}
+
 resource "aws_ssm_parameter" "standby_private_sg_id" {
   name  = "/${var.project_name}/${local.environment}/network/standby/private_sg_id"
   type  = "String"
   value = module.network.standby_private_sg_id
+}
+
+resource "aws_ssm_parameter" "standby_application_sg_id" {
+  name  = "/${var.project_name}/${local.environment}/network/standby/application_sg_id"
+  type  = "String"
+  value = module.network.standby_application_sg_id
 }

@@ -31,7 +31,6 @@ variable "db_params" {
     db_name              = string
     username             = string
     parameter_group_name = string
-    enable_multi_az      = bool
   })
   # Validation for Instance Name
   validation {
@@ -53,6 +52,12 @@ variable "db_params" {
 
 
 }
+
+variable "enable_multi_az" {
+  description = "Enable Multi-AZ deployment for the primary RDS instance"
+  type        = bool
+}
+
 variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)"
   type        = string

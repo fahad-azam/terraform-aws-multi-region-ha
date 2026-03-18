@@ -10,10 +10,10 @@ output "standby_asg_name" {
 
 output "primary_application_security_group_id" {
   description = "Primary region application security group"
-  value       = aws_security_group.primary_application.id
+  value       = data.aws_ssm_parameter.primary_application_sg_id.value
 }
 
 output "standby_application_security_group_id" {
   description = "Standby region application security group"
-  value       = aws_security_group.standby_application.id
+  value       = data.aws_ssm_parameter.standby_application_sg_id.value
 }

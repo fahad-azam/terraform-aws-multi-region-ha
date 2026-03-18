@@ -28,9 +28,20 @@ output "primary_private_sg_id" {
   description = "Linear transfer: Passing primary private SG ID from child to root"
   value       = module.security_groups.primary_private_sg_id
 }
+
+output "primary_application_sg_id" {
+  description = "Linear transfer: Passing primary application SG ID from child to root"
+  value       = module.security_groups.primary_application_sg_id
+}
+
 output "standby_private_sg_id" {
   description = "Linear transfer: Passing standby private SG ID from child to root"
   value       = module.security_groups.standby_private_sg_id
+}
+
+output "standby_application_sg_id" {
+  description = "Linear transfer: Passing standby application SG ID from child to root"
+  value       = module.security_groups.standby_application_sg_id
 }
 output "primary_rt_id" {
   description = "Linear transfer: Passing primary route table ID from child to root"
@@ -47,4 +58,4 @@ output "primary_igw_id" {
 output "standby_igw_id" {
   description = "Linear transfer: Passing standby IGW ID from child to root"
   value       = module.gateways.standby_igw_id
-} 
+}

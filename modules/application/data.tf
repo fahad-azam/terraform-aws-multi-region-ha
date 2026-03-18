@@ -1,41 +1,25 @@
-data "aws_ssm_parameter" "primary_public_subnet_az1" {
-  name = "/${var.project_name}/${var.environment}/network/primary/subnets/public_az1/id"
+data "aws_ssm_parameter" "primary_private_app_subnet_az1" {
+  name = "/${var.project_name}/${var.environment}/network/primary/subnets/private_app1/id"
 }
 
-data "aws_ssm_parameter" "primary_public_subnet_az2" {
-  name = "/${var.project_name}/${var.environment}/network/primary/subnets/public_az2/id"
+data "aws_ssm_parameter" "primary_private_app_subnet_az2" {
+  name = "/${var.project_name}/${var.environment}/network/primary/subnets/private_app2/id"
 }
 
-data "aws_ssm_parameter" "standby_public_subnet_az1" {
-  name = "/${var.project_name}/${var.environment}/network/standby/subnets/public_az1/id"
+data "aws_ssm_parameter" "standby_private_app_subnet_az1" {
+  name = "/${var.project_name}/${var.environment}/network/standby/subnets/private_app1/id"
 }
 
-data "aws_ssm_parameter" "standby_public_subnet_az2" {
-  name = "/${var.project_name}/${var.environment}/network/standby/subnets/public_az2/id"
+data "aws_ssm_parameter" "standby_private_app_subnet_az2" {
+  name = "/${var.project_name}/${var.environment}/network/standby/subnets/private_app2/id"
 }
 
-data "aws_ssm_parameter" "primary_vpc_id" {
-  name = "/${var.project_name}/${var.environment}/network/primary/primary_vpc_id"
+data "aws_ssm_parameter" "primary_application_sg_id" {
+  name = "/${var.project_name}/${var.environment}/network/primary/application_sg_id"
 }
 
-data "aws_ssm_parameter" "standby_vpc_id" {
-  name = "/${var.project_name}/${var.environment}/network/standby/standby_vpc_id"
-}
-
-data "aws_ssm_parameter" "primary_public_sg_id" {
-  name = "/${var.project_name}/${var.environment}/network/primary/public_sg_id"
-}
-
-data "aws_ssm_parameter" "standby_public_sg_id" {
-  name = "/${var.project_name}/${var.environment}/network/standby/public_sg_id"
-}
-
-data "aws_ssm_parameter" "primary_private_sg_id" {
-  name = "/${var.project_name}/${var.environment}/network/primary/private_sg_id"
-}
-
-data "aws_ssm_parameter" "standby_private_sg_id" {
-  name = "/${var.project_name}/${var.environment}/network/standby/private_sg_id"
+data "aws_ssm_parameter" "standby_application_sg_id" {
+  name = "/${var.project_name}/${var.environment}/network/standby/application_sg_id"
 }
 
 data "aws_ssm_parameter" "primary_db_endpoint" {

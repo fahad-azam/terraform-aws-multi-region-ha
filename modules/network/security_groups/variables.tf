@@ -31,3 +31,15 @@ variable "standby_private_sg_name" {
   type        = string
   default     = "standby-private-sg"
 }
+
+variable "primary_application_sg_name" {
+  description = "Application security group name in the primary region"
+  type        = string
+  default     = "primary-application-sg"
+}
+
+variable "standby_application_sg_name" {
+  description = "Application security group name in the standby region"
+  type        = string
+  default     = "standby-application-sg"
+}

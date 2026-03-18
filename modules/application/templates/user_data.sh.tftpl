@@ -1,3 +1,4 @@
+#!/bin/bash
 set -euxo pipefail
 
 mkdir -p /opt/db-demo
@@ -80,13 +81,13 @@ HTTPServer(("0.0.0.0", APP_PORT), H).serve_forever()
 PYTHON
 
 cat <<'ENVFILE' > /etc/db-demo.env
-APP_PORT=$${application_port}
-DB_ENDPOINT=$${db_endpoint}
-DB_PORT=$${db_port}
-PROJECT_NAME=$${project_name}
-ENVIRONMENT=$${environment}
-REGION_LABEL=$${region_label}
-HEALTH_CHECK_PATH=$${health_check_path}
+APP_PORT=${application_port}
+DB_ENDPOINT=${db_endpoint}
+DB_PORT=${db_port}
+PROJECT_NAME=${project_name}
+ENVIRONMENT=${environment}
+REGION_LABEL=${region_label}
+HEALTH_CHECK_PATH=${health_check_path}
 ENVFILE
 
 cat <<'SERVICE' > /etc/systemd/system/db-demo.service

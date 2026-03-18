@@ -5,7 +5,9 @@ module "database" {
   primary_region_aws = var.primary_region_aws
   standby_region_aws = var.standby_region_aws
   environment        = local.environment
-  db_params          = var.db_params
+  db_params = merge(var.db_params, {
+    enable_multi_az = var.enable_multi_az
+  })
 
   providers = {
     aws                    = aws

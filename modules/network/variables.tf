@@ -33,3 +33,9 @@ variable "public_inbound_rules" {
     cidrs     = list(string)
   }))
 }
+
+variable "application_port" {
+  description = "Port exposed by the application instances behind the load balancer"
+  type        = number
+  default     = 80
+}

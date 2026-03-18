@@ -107,11 +107,14 @@ module "security_groups" {
 module "security_group_rules" {
   source = "./security_group_rules"
 
-  primary_public_sg_id  = module.security_groups.primary_public_sg_id
-  primary_private_sg_id = module.security_groups.primary_private_sg_id
-  standby_public_sg_id  = module.security_groups.standby_public_sg_id
-  standby_private_sg_id = module.security_groups.standby_private_sg_id
-  public_inbound_rules  = var.public_inbound_rules
+  primary_public_sg_id      = module.security_groups.primary_public_sg_id
+  primary_private_sg_id     = module.security_groups.primary_private_sg_id
+  primary_application_sg_id = module.security_groups.primary_application_sg_id
+  standby_public_sg_id      = module.security_groups.standby_public_sg_id
+  standby_private_sg_id     = module.security_groups.standby_private_sg_id
+  standby_application_sg_id = module.security_groups.standby_application_sg_id
+  public_inbound_rules      = var.public_inbound_rules
+  application_port          = var.application_port
 
   providers = {
     aws                    = aws
