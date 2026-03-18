@@ -59,3 +59,14 @@ variable "public_inbound_rules" {
     cidrs     = list(string)
   }))
 }
+
+variable "nat_instance_type" {
+  description = "Instance type for the NAT instance deployed in each region"
+  type        = string
+  default     = "t3.nano"
+}
+
+variable "database_port" {
+  description = "Database port to allow for cross-region application-to-DB access"
+  type        = number
+}

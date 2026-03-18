@@ -1,107 +1,44 @@
 #!/bin/bash
 set -euxo pipefail
 
-mkdir -p /opt/db-demo
+if ! command -v python3 >/dev/null 2>&1; then
+  dnf install -y python3
+fi
 
-cat <<'PYTHON' > /opt/db-demo/app.py
-import json, os, socket
-from datetime import datetime, timezone
-from http.server import BaseHTTPRequestHandler, HTTPServer
+if ! command -v aws >/dev/null 2>&1; then
+  dnf install -y awscli || dnf install -y awscli2
+fi
 
-APP_PORT = int(os.environ["APP_PORT"])
-DB_ENDPOINT = os.environ["DB_ENDPOINT"]
-DB_PORT = int(os.environ["DB_PORT"])
-PROJECT_NAME = os.environ["PROJECT_NAME"]
-ENVIRONMENT = os.environ["ENVIRONMENT"]
-REGION_LABEL = os.environ["REGION_LABEL"]
-HEALTH_CHECK_PATH = os.environ["HEALTH_CHECK_PATH"]
-HOSTNAME = socket.gethostname()
+install -d -m 0755 /opt/resume-portal
+aws s3 cp "s3://${artifact_bucket}/${artifact_key}" /opt/resume-portal/app.py --region ${aws_region}
 
-def check_db():
-    try:
-        socket.create_connection((DB_ENDPOINT, DB_PORT), timeout=3)
-        return True, "reachable"
-    except Exception as e:
-        return False, str(e)
-
-def payload():
-    ok, msg = check_db()
-    return {
-        "project": PROJECT_NAME,
-        "env": ENVIRONMENT,
-        "region": REGION_LABEL,
-        "host": HOSTNAME,
-        "time": datetime.now(timezone.utc).isoformat(),
-        "db": {"endpoint": DB_ENDPOINT, "port": DB_PORT, "ok": ok, "msg": msg}
-    }
-
-HTML = """<html><body style="font-family:monospace;background:#0b1220;color:#e2e8f0">
-<h2>{project} ({env})</h2>
-<p>Region: {region}</p>
-<p>Host: {host}</p>
-<p>Time: {time}</p>
-<h3>Database</h3>
-<p>Status: <b>{db_status}</b></p>
-<p>{db_msg}</p>
-<pre>{json}</pre>
-</body></html>"""
-
-class H(BaseHTTPRequestHandler):
-    def do_GET(self):
-        p = payload()
-        if self.path == HEALTH_CHECK_PATH:
-            body = json.dumps({"status":"ok","db":p["db"]["ok"]}).encode()
-            self.send_response(200)
-            self.send_header("Content-Type","application/json")
-            self.send_header("Content-Length",str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-            return
-
-        html = HTML.format(
-            project=p["project"],
-            env=p["env"],
-            region=p["region"],
-            host=p["host"],
-            time=p["time"],
-            db_status="OK" if p["db"]["ok"] else "FAIL",
-            db_msg=p["db"]["msg"],
-            json=json.dumps(p, indent=2)
-        ).encode()
-
-        self.send_response(200)
-        self.send_header("Content-Type","text/html")
-        self.send_header("Content-Length",str(len(html)))
-        self.end_headers()
-        self.wfile.write(html)
-
-    def log_message(self, *args): return
-
-HTTPServer(("0.0.0.0", APP_PORT), H).serve_forever()
-PYTHON
-
-cat <<'ENVFILE' > /etc/db-demo.env
+cat <<'ENVFILE' > /etc/resume-portal.env
 APP_PORT=${application_port}
+AWS_REGION=${aws_region}
+AWS_DEFAULT_REGION=${aws_region}
+DATA_BUCKET=${data_bucket}
 DB_ENDPOINT=${db_endpoint}
 DB_PORT=${db_port}
+HEALTH_CHECK_PATH=${health_check_path}
 PROJECT_NAME=${project_name}
 ENVIRONMENT=${environment}
 REGION_LABEL=${region_label}
-HEALTH_CHECK_PATH=${health_check_path}
 ENVFILE
 
-cat <<'SERVICE' > /etc/systemd/system/db-demo.service
+cat <<'SERVICE' > /etc/systemd/system/resume-portal.service
 [Unit]
-Description=DB demo
+Description=Resume portal dashboard
 After=network.target
 
 [Service]
-EnvironmentFile=/etc/db-demo.env
-ExecStart=/usr/bin/python3 /opt/db-demo/app.py
+EnvironmentFile=/etc/resume-portal.env
+WorkingDirectory=/opt/resume-portal
+ExecStart=/usr/bin/python3 /opt/resume-portal/app.py
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 SERVICE
+
 systemctl daemon-reload
-systemctl enable --now db-demo.service
+systemctl enable --now resume-portal.service

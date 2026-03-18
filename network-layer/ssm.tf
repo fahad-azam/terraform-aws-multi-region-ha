@@ -45,6 +45,21 @@ resource "aws_ssm_parameter" "standby_igw_id" {
   type  = "String"
   value = module.network.standby_igw_id
 }
+resource "aws_ssm_parameter" "primary_nat_instance_id" {
+  name  = "/${var.project_name}/${local.environment}/network/primary/nat_instance_id"
+  type  = "String"
+  value = module.network.primary_nat_instance_id
+}
+resource "aws_ssm_parameter" "standby_nat_instance_id" {
+  name  = "/${var.project_name}/${local.environment}/network/standby/nat_instance_id"
+  type  = "String"
+  value = module.network.standby_nat_instance_id
+}
+resource "aws_ssm_parameter" "vpc_peering_connection_id" {
+  name  = "/${var.project_name}/${local.environment}/network/vpc_peering_connection_id"
+  type  = "String"
+  value = module.network.vpc_peering_connection_id
+}
 resource "aws_ssm_parameter" "primary_public_sg_id" {
   name  = "/${var.project_name}/${local.environment}/network/primary/public_sg_id"
   type  = "String"

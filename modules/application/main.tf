@@ -5,13 +5,22 @@ resource "aws_launch_template" "primary_application" {
 
   vpc_security_group_ids = [data.aws_ssm_parameter.primary_application_sg_id.value]
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   iam_instance_profile {
     name = data.aws_ssm_parameter.primary_application_instance_profile_name.value
   }
 
   user_data = base64gzip(templatefile("${path.module}/templates/user_data.sh.tftpl", {
     application_port  = local.application_port
-    db_endpoint       = trimsuffix(data.aws_ssm_parameter.primary_db_endpoint.value, ":${data.aws_ssm_parameter.primary_db_port.value}")
+    artifact_bucket   = data.aws_ssm_parameter.primary_artifact_bucket_name.value
+    artifact_key      = data.aws_ssm_parameter.application_artifact_key.value
+    aws_region        = var.primary_region_aws
+    data_bucket       = data.aws_ssm_parameter.primary_data_bucket_name.value
+    db_endpoint       = data.aws_ssm_parameter.db_record_fqdn.value
     db_port           = data.aws_ssm_parameter.primary_db_port.value
     environment       = var.environment
     health_check_path = var.health_check_path
@@ -56,13 +65,22 @@ resource "aws_launch_template" "standby_application" {
 
   vpc_security_group_ids = [data.aws_ssm_parameter.standby_application_sg_id.value]
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   iam_instance_profile {
     name = data.aws_ssm_parameter.standby_application_instance_profile_name.value
   }
 
-  user_data = base64encode(templatefile("${path.module}/templates/user_data.sh.tftpl", {
+  user_data = base64gzip(templatefile("${path.module}/templates/user_data.sh.tftpl", {
     application_port  = local.application_port
-    db_endpoint       = trimsuffix(data.aws_ssm_parameter.standby_db_endpoint.value, ":${data.aws_ssm_parameter.standby_db_port.value}")
+    artifact_bucket   = data.aws_ssm_parameter.standby_artifact_bucket_name.value
+    artifact_key      = data.aws_ssm_parameter.application_artifact_key.value
+    aws_region        = var.standby_region_aws
+    data_bucket       = data.aws_ssm_parameter.standby_data_bucket_name.value
+    db_endpoint       = data.aws_ssm_parameter.db_record_fqdn.value
     db_port           = data.aws_ssm_parameter.standby_db_port.value
     environment       = var.environment
     health_check_path = var.health_check_path

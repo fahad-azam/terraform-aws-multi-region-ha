@@ -26,3 +26,13 @@ variable "aws_standby_internet_gateway_id" {
   type        = string
   description = "Internet Gateway ID for the standby region"
 }
+
+variable "primary_nat_network_interface_id" {
+  type        = string
+  description = "Primary network interface ID for the primary NAT instance"
+}
+
+variable "standby_nat_network_interface_id" {
+  type        = string
+  description = "Primary network interface ID for the standby NAT instance"
+}

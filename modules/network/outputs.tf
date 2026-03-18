@@ -59,3 +59,43 @@ output "standby_igw_id" {
   description = "Linear transfer: Passing standby IGW ID from child to root"
   value       = module.gateways.standby_igw_id
 }
+
+output "primary_nat_instance_id" {
+  description = "Linear transfer: Passing primary NAT instance ID from child to root"
+  value       = module.gateways.primary_nat_instance_id
+}
+
+output "standby_nat_instance_id" {
+  description = "Linear transfer: Passing standby NAT instance ID from child to root"
+  value       = module.gateways.standby_nat_instance_id
+}
+
+output "primary_nat_network_interface_id" {
+  description = "Linear transfer: Passing primary NAT network interface ID from child to root"
+  value       = module.gateways.primary_nat_network_interface_id
+}
+
+output "standby_nat_network_interface_id" {
+  description = "Linear transfer: Passing standby NAT network interface ID from child to root"
+  value       = module.gateways.standby_nat_network_interface_id
+}
+
+output "vpc_peering_connection_id" {
+  description = "Linear transfer: Passing VPC peering connection ID from child to root"
+  value       = module.peering.vpc_peering_connection_id
+}
+
+output "vpc_peering_status" {
+  description = "Linear transfer: Passing VPC peering status from child to root"
+  value       = module.peering.vpc_peering_status
+}
+
+output "primary_s3_vpc_endpoint_id" {
+  description = "Gateway VPC endpoint ID for S3 in the primary region"
+  value       = module.endpoints.primary_s3_vpc_endpoint_id
+}
+
+output "standby_s3_vpc_endpoint_id" {
+  description = "Gateway VPC endpoint ID for S3 in the standby region"
+  value       = module.endpoints.standby_s3_vpc_endpoint_id
+}

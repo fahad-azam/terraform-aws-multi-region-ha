@@ -26,6 +26,10 @@ data "aws_ssm_parameter" "primary_db_endpoint" {
   name = "/${var.project_name}/${var.environment}/rds/primary/endpoint"
 }
 
+data "aws_ssm_parameter" "db_record_fqdn" {
+  name = "/${var.project_name}/${var.environment}/route53/db_record_fqdn"
+}
+
 data "aws_ssm_parameter" "standby_db_endpoint" {
   name = "/${var.project_name}/${var.environment}/rds/standby/endpoint"
 }
@@ -56,6 +60,26 @@ data "aws_ssm_parameter" "primary_application_instance_profile_name" {
 
 data "aws_ssm_parameter" "standby_application_instance_profile_name" {
   name = "/${var.project_name}/${var.environment}/iam/standby/application_instance_profile_name"
+}
+
+data "aws_ssm_parameter" "primary_artifact_bucket_name" {
+  name = "/${var.project_name}/${var.environment}/storage/primary/artifact_bucket_name"
+}
+
+data "aws_ssm_parameter" "standby_artifact_bucket_name" {
+  name = "/${var.project_name}/${var.environment}/storage/standby/artifact_bucket_name"
+}
+
+data "aws_ssm_parameter" "primary_data_bucket_name" {
+  name = "/${var.project_name}/${var.environment}/storage/primary/data_bucket_name"
+}
+
+data "aws_ssm_parameter" "standby_data_bucket_name" {
+  name = "/${var.project_name}/${var.environment}/storage/standby/data_bucket_name"
+}
+
+data "aws_ssm_parameter" "application_artifact_key" {
+  name = "/${var.project_name}/${var.environment}/storage/application_artifact_key"
 }
 
 data "aws_ssm_parameter" "al2023_primary" {

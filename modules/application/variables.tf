@@ -8,6 +8,16 @@ variable "environment" {
   type        = string
 }
 
+variable "primary_region_aws" {
+  description = "Primary AWS region for the application stack"
+  type        = string
+}
+
+variable "standby_region_aws" {
+  description = "Standby AWS region for the application stack"
+  type        = string
+}
+
 variable "instance_type" {
   description = "EC2 instance type for the demo app"
   type        = string

@@ -38,6 +38,25 @@ resource "aws_security_group_rule" "standby_application_to_private" {
   source_security_group_id = var.standby_application_sg_id
 }
 
+resource "aws_security_group_rule" "primary_db_from_standby_vpc" {
+  type              = "ingress"
+  from_port         = var.database_port
+  to_port           = var.database_port
+  protocol          = "tcp"
+  security_group_id = var.primary_private_sg_id
+  cidr_blocks       = [var.standby_vpc_cidr]
+}
+
+resource "aws_security_group_rule" "standby_db_from_primary_vpc" {
+  provider          = aws.standby_region_aws
+  type              = "ingress"
+  from_port         = var.database_port
+  to_port           = var.database_port
+  protocol          = "tcp"
+  security_group_id = var.standby_private_sg_id
+  cidr_blocks       = [var.primary_vpc_cidr]
+}
+
 resource "aws_security_group_rule" "primary_private_outbound" {
   type              = "egress"
   from_port         = local.private_outbound.from_port # e.g., 0

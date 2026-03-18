@@ -41,3 +41,18 @@ variable "application_port" {
   description = "Port exposed by the application instances"
   type        = number
 }
+
+variable "primary_vpc_cidr" {
+  description = "Primary VPC CIDR block"
+  type        = string
+}
+
+variable "standby_vpc_cidr" {
+  description = "Standby VPC CIDR block"
+  type        = string
+}
+
+variable "database_port" {
+  description = "Database port to allow for cross-region application-to-DB access"
+  type        = number
+}
