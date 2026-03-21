@@ -43,6 +43,11 @@ variable "health_check_path" {
   type        = string
 }
 
+variable "readiness_check_path" {
+  description = "Readiness check path served by the demo app"
+  type        = string
+}
+
 variable "common_tags" {
   description = "Common tags shared by application resources"
   type        = map(string)

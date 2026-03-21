@@ -150,6 +150,8 @@ data "aws_iam_policy_document" "standby_jobs_lambda_permissions" {
   statement {
     sid = "PromoteAndInspectRds"
     actions = [
+      "rds:CreateDBInstanceReadReplica",
+      "rds:DeleteDBInstance",
       "rds:DescribeDBInstances",
       "rds:PromoteReadReplica",
     ]

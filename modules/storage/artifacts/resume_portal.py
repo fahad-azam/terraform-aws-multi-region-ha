@@ -15,10 +15,12 @@ DB_ENDPOINT = os.environ["DB_ENDPOINT"]
 DB_PORT = int(os.environ["DB_PORT"])
 ENVIRONMENT = os.environ["ENVIRONMENT"]
 HEALTH_CHECK_PATH = os.environ["HEALTH_CHECK_PATH"]
+READINESS_CHECK_PATH = os.environ.get("READINESS_CHECK_PATH", "/readiness")
 PROJECT_NAME = os.environ["PROJECT_NAME"]
 REGION_LABEL = os.environ["REGION_LABEL"]
 HOSTNAME = socket.gethostname()
 DEFAULT_HEALTH_PATH = "/health"
+DEFAULT_READINESS_PATH = "/readiness"
 
 
 def normalized_health_path():
@@ -29,6 +31,17 @@ def normalized_health_path():
         path = f"/{path}"
     if path == "/":
         return DEFAULT_HEALTH_PATH
+    return path
+
+
+def normalized_readiness_path():
+    path = (READINESS_CHECK_PATH or "").strip()
+    if not path:
+        return DEFAULT_READINESS_PATH
+    if not path.startswith("/"):
+        path = f"/{path}"
+    if path == "/":
+        return DEFAULT_READINESS_PATH
     return path
 
 
@@ -314,7 +327,17 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         payload = build_payload()
         health_path = normalized_health_path()
+        readiness_path = normalized_readiness_path()
         if self.path == health_path:
+            body = json.dumps(payload).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == readiness_path:
             body = json.dumps(payload).encode("utf-8")
             self.send_response(200 if payload["status"] == "ok" else 503)
             self.send_header("Content-Type", "application/json")

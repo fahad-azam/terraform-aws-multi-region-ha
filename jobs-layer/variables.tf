@@ -29,10 +29,10 @@ variable "db_port" {
   default     = 5432
 }
 
-variable "app_health_path" {
-  description = "Application health endpoint path"
+variable "app_readiness_path" {
+  description = "Application readiness endpoint path"
   type        = string
-  default     = "/health"
+  default     = "/readiness"
 }
 
 variable "additional_tags" {

@@ -91,8 +91,56 @@ resource "aws_lambda_function" "full_failover" {
       ENVIRONMENT     = var.environment
       PRIMARY_REGION  = var.primary_region_aws
       STANDBY_REGION  = var.standby_region_aws
-      APP_HEALTH_PATH = var.app_health_path
+      APP_READINESS_PATH = var.app_readiness_path
       DB_PORT         = tostring(var.db_port)
+    }
+  }
+
+  depends_on = [aws_lambda_function.ssm_replication]
+}
+
+resource "aws_lambda_function" "full_failback" {
+  provider         = aws.standby_region_aws
+  function_name    = "${var.project_name}-${var.environment}-full-failback"
+  role             = data.aws_ssm_parameter.standby_jobs_lambda_role_arn.value
+  handler          = "full_failback.handler"
+  runtime          = "python3.13"
+  filename         = data.archive_file.full_failback_package.output_path
+  source_code_hash = data.archive_file.full_failback_package.output_base64sha256
+  timeout          = 900
+  memory_size      = 256
+
+  environment {
+    variables = {
+      PROJECT_NAME    = var.project_name
+      ENVIRONMENT     = var.environment
+      PRIMARY_REGION  = var.primary_region_aws
+      STANDBY_REGION  = var.standby_region_aws
+      APP_READINESS_PATH = var.app_readiness_path
+      DB_PORT         = tostring(var.db_port)
+    }
+  }
+
+  depends_on = [aws_lambda_function.ssm_replication]
+}
+
+resource "aws_lambda_function" "rebuild_standby_replica" {
+  provider         = aws.standby_region_aws
+  function_name    = "${var.project_name}-${var.environment}-rebuild-standby-replica"
+  role             = data.aws_ssm_parameter.standby_jobs_lambda_role_arn.value
+  handler          = "rebuild_standby_replica.handler"
+  runtime          = "python3.13"
+  filename         = data.archive_file.rebuild_standby_replica_package.output_path
+  source_code_hash = data.archive_file.rebuild_standby_replica_package.output_base64sha256
+  timeout          = 900
+  memory_size      = 256
+
+  environment {
+    variables = {
+      PROJECT_NAME   = var.project_name
+      ENVIRONMENT    = var.environment
+      PRIMARY_REGION = var.primary_region_aws
+      STANDBY_REGION = var.standby_region_aws
     }
   }
 

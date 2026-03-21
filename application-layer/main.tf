@@ -9,7 +9,8 @@ module "application" {
   desired_capacity   = var.desired_capacity
   min_size           = var.min_size
   max_size           = var.max_size
-  health_check_path  = var.health_check_path
+  health_check_path    = var.health_check_path
+  readiness_check_path = var.readiness_check_path
   common_tags        = local.common_tags
 
   providers = {

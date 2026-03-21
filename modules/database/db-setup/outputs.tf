@@ -1,6 +1,6 @@
 output "primary_db_instance_id" {
   description = "Identifier of the primary RDS instance"
-  value       = aws_db_instance.primary.id
+  value       = aws_db_instance.primary.identifier
 }
 
 output "primary_db_instance_arn" {
@@ -20,7 +20,7 @@ output "primary_db_port" {
 
 output "standby_db_instance_id" {
   description = "Identifier of the standby RDS instance"
-  value       = aws_db_instance.standby.id
+  value       = aws_db_instance.standby.identifier
 }
 
 output "standby_db_instance_arn" {

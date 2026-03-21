@@ -23,8 +23,8 @@ variable "db_port" {
   type        = number
 }
 
-variable "app_health_path" {
-  description = "Application health endpoint path"
+variable "app_readiness_path" {
+  description = "Application readiness endpoint path"
   type        = string
 }
 

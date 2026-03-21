@@ -25,6 +25,7 @@ resource "aws_launch_template" "primary_application" {
     environment       = var.environment
     env_file_path     = local.env_file_path
     health_check_path = var.health_check_path
+    readiness_check_path = var.readiness_check_path
     install_dir       = local.install_dir
     project_name      = var.project_name
     region_label      = "primary"
@@ -88,6 +89,7 @@ resource "aws_launch_template" "standby_application" {
     environment       = var.environment
     env_file_path     = local.env_file_path
     health_check_path = var.health_check_path
+    readiness_check_path = var.readiness_check_path
     install_dir       = local.install_dir
     project_name      = var.project_name
     region_label      = "standby"

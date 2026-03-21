@@ -6,7 +6,7 @@ module "jobs" {
   primary_region_aws = var.primary_region_aws
   standby_region_aws = var.standby_region_aws
   db_port            = var.db_port
-  app_health_path    = var.app_health_path
+  app_readiness_path = var.app_readiness_path
   common_tags        = local.common_tags
 
   providers = {

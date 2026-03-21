@@ -84,6 +84,8 @@ flowchart TB
         subgraph jobs[Jobs Layer]
             repl[Lambda: ssm_replication]
             fail[Lambda: full_failover]
+            failback[Lambda: full_failback]
+            rebuild[Lambda: rebuild_standby_replica]
         end
 
         sjobrole[Generic Standby Jobs IAM Role]
@@ -132,10 +134,17 @@ flowchart TB
     pssm -. replicate .-> repl
     repl --> sssm
     sssm --> fail
+    sssm --> failback
+    sssm --> rebuild
     sjobrole --> repl
     sjobrole --> fail
+    sjobrole --> failback
+    sjobrole --> rebuild
     fail -. promote replica .-> srds
     fail -. update DNS .-> r53
+    failback -. update DNS .-> r53
+    rebuild -. recreate replica .-> pdb
+    rebuild -. recreate replica .-> sdb
 ```
 
 ## Architecture Summary
@@ -244,6 +253,17 @@ Creates two operational Lambda jobs in the standby region:
   - updates DB Route 53 record
   - updates app Route 53 record
   - writes failover state into standby SSM
+- `full_failback`
+  - reads standby-region SSM
+  - validates primary app and primary DB
+  - updates DB Route 53 record back to primary
+  - updates app Route 53 record back to primary
+  - writes failover state back to `primary` in standby SSM
+- `rebuild_standby_replica`
+  - reads standby-region failover state to find the active DB side
+  - deletes the inactive standalone DB if needed
+  - recreates the inactive side as a cross-region read replica of the active writer
+  - updates primary and standby SSM DB parameters with the rebuilt replica details
 
 ## Application
 
@@ -258,7 +278,8 @@ The deployed application is a lightweight Python dashboard that shows:
 Routes:
 
 - `/` renders the HTML dashboard
-- `/health` returns JSON health output
+- `/health` returns liveness JSON and stays `200` while the app is serving
+- `/readiness` returns dependency-aware JSON and returns `200` only when DB and S3 checks pass
 
 ## SSM Strategy
 
@@ -328,13 +349,40 @@ Current full failover flow:
 
 This is currently a manual operational action initiated through Lambda, not an automated monitoring-driven failover.
 
+## Full Failback Flow
+
+Current full failback flow:
+
+1. Confirm primary app is healthy
+2. Confirm primary DB is healthy
+3. Update `db.<domain>` back to the primary DB target
+4. Update `app.<domain>` back to the primary ALB
+5. Validate primary application health
+6. Record failback state in standby SSM
+
+This failback Lambda is a DNS-and-state failback path. It does not recreate cross-region replication automatically after a standby promotion.
+
+## Replica Rebuild Flow
+
+Current replica rebuild flow:
+
+1. Read standby-region failover state to determine the active DB region
+2. Treat the opposite side as the replica target
+3. Delete the opposite-side standalone DB if it is no longer a replica
+4. Create a new cross-region read replica from the active writer
+5. Wait for the replica to become available
+6. Update both primary and standby SSM DB parameters for the rebuilt side
+
+This is intended as the second-stage topology repair step after `full_failover` or `full_failback`.
+
 ## Health Checks
 
-Health path has been aligned to:
+Health path model:
 
-- application: `/health`
+- application liveness: `/health`
+- application readiness: `/readiness`
 - ALB health check: `/health`
-- failover validation: `/health`
+- failover and failback validation: `/readiness`
 
 The dashboard root path remains `/`.
 
@@ -384,7 +432,7 @@ Current tradeoffs include:
 The project has been checked with Terraform validation across the active layers after the recent changes:
 
 - standby region alignment to `us-east-2`
-- `/health` consistency
+- liveness and readiness split
 - configurable application packaging paths
 - layer-level `project_name` validation
 

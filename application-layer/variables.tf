@@ -58,3 +58,9 @@ variable "health_check_path" {
   type        = string
   default     = "/health"
 }
+
+variable "readiness_check_path" {
+  description = "Application readiness check path used by the demo app"
+  type        = string
+  default     = "/readiness"
+}
