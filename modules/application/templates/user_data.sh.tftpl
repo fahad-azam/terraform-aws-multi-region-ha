@@ -9,10 +9,10 @@ if ! command -v aws >/dev/null 2>&1; then
   dnf install -y awscli || dnf install -y awscli2
 fi
 
-install -d -m 0755 /opt/resume-portal
-aws s3 cp "s3://${artifact_bucket}/${artifact_key}" /opt/resume-portal/app.py --region ${aws_region}
+install -d -m 0755 ${install_dir}
+aws s3 cp "s3://${artifact_bucket}/${artifact_key}" ${install_dir}/app.py --region ${aws_region}
 
-cat <<'ENVFILE' > /etc/resume-portal.env
+cat <<'ENVFILE' > ${env_file_path}
 APP_PORT=${application_port}
 AWS_REGION=${aws_region}
 AWS_DEFAULT_REGION=${aws_region}
@@ -25,15 +25,15 @@ ENVIRONMENT=${environment}
 REGION_LABEL=${region_label}
 ENVFILE
 
-cat <<'SERVICE' > /etc/systemd/system/resume-portal.service
+cat <<'SERVICE' > /etc/systemd/system/${service_name}
 [Unit]
-Description=Resume portal dashboard
+Description=Application dashboard
 After=network.target
 
 [Service]
-EnvironmentFile=/etc/resume-portal.env
-WorkingDirectory=/opt/resume-portal
-ExecStart=/usr/bin/python3 /opt/resume-portal/app.py
+EnvironmentFile=${env_file_path}
+WorkingDirectory=${install_dir}
+ExecStart=/usr/bin/python3 ${install_dir}/app.py
 Restart=always
 
 [Install]
@@ -41,4 +41,4 @@ WantedBy=multi-user.target
 SERVICE
 
 systemctl daemon-reload
-systemctl enable --now resume-portal.service
+systemctl enable --now ${service_name}

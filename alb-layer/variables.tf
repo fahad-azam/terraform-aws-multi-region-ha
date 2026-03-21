@@ -1,6 +1,11 @@
 variable "project_name" {
   description = "Enter project name to be used as prefix for all resources"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+(?:-[a-z0-9]+)*$", var.project_name))
+    error_message = "project_name must use only lowercase letters, numbers, and hyphens."
+  }
 }
 variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)"

@@ -1,6 +1,11 @@
 variable "project_name" {
   description = "Project name used for SSM paths and tags"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+(?:-[a-z0-9]+)*$", var.project_name))
+    error_message = "project_name must use only lowercase letters, numbers, and hyphens."
+  }
 }
 
 variable "environment" {

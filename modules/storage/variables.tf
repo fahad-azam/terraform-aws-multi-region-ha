@@ -22,3 +22,13 @@ variable "common_tags" {
   description = "Common tags shared by storage resources"
   type        = map(string)
 }
+
+variable "application_artifact_key" {
+  description = "Object key used to store the application artifact in S3"
+  type        = string
+}
+
+variable "application_artifact_filename" {
+  description = "Artifact filename located under this module's artifacts directory"
+  type        = string
+}

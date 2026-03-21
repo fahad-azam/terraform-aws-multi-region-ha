@@ -17,3 +17,8 @@ output "standby_application_instance_profile_name" {
   description = "Standby application instance profile name"
   value       = aws_iam_instance_profile.standby_application.name
 }
+
+output "standby_jobs_lambda_role_arn" {
+  description = "IAM role ARN shared by standby jobs Lambdas"
+  value       = aws_iam_role.standby_jobs_lambda.arn
+}

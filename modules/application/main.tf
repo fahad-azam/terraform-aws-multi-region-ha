@@ -23,9 +23,12 @@ resource "aws_launch_template" "primary_application" {
     db_endpoint       = data.aws_ssm_parameter.db_record_fqdn.value
     db_port           = data.aws_ssm_parameter.primary_db_port.value
     environment       = var.environment
+    env_file_path     = local.env_file_path
     health_check_path = var.health_check_path
+    install_dir       = local.install_dir
     project_name      = var.project_name
     region_label      = "primary"
+    service_name      = local.service_name
   }))
 
   tag_specifications {
@@ -83,9 +86,12 @@ resource "aws_launch_template" "standby_application" {
     db_endpoint       = data.aws_ssm_parameter.db_record_fqdn.value
     db_port           = data.aws_ssm_parameter.standby_db_port.value
     environment       = var.environment
+    env_file_path     = local.env_file_path
     health_check_path = var.health_check_path
+    install_dir       = local.install_dir
     project_name      = var.project_name
     region_label      = "standby"
+    service_name      = local.service_name
   }))
 
   tag_specifications {

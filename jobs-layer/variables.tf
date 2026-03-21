@@ -1,5 +1,5 @@
 variable "project_name" {
-  description = "Project name used for resource naming"
+  description = "Project name used for job resources"
   type        = string
 
   validation {
@@ -9,7 +9,7 @@ variable "project_name" {
 }
 
 variable "environment" {
-  description = "Deployment environment name"
+  description = "Deployment environment"
   type        = string
 }
 
@@ -23,18 +23,20 @@ variable "standby_region_aws" {
   type        = string
 }
 
+variable "db_port" {
+  description = "Database port used by the application"
+  type        = number
+  default     = 5432
+}
+
+variable "app_health_path" {
+  description = "Application health endpoint path"
+  type        = string
+  default     = "/health"
+}
+
 variable "additional_tags" {
-  description = "Additional AWS tags to apply on top of the default tag set"
+  description = "Additional tags to apply to job resources"
   type        = map(string)
   default     = {}
-}
-
-variable "application_artifact_key" {
-  description = "Object key used to store the application artifact in S3"
-  type        = string
-}
-
-variable "application_artifact_filename" {
-  description = "Artifact filename located under modules/storage/artifacts"
-  type        = string
 }

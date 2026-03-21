@@ -1,6 +1,11 @@
 variable "project_name" {
   description = "Enter project name to be used as prefix for all resources"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+(?:-[a-z0-9]+)*$", var.project_name))
+    error_message = "project_name must use only lowercase letters, numbers, and hyphens."
+  }
 }
 
 variable "environment" {
@@ -51,5 +56,5 @@ variable "max_size" {
 variable "health_check_path" {
   description = "Application health check path used by the demo app"
   type        = string
-  default     = "/"
+  default     = "/health"
 }

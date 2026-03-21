@@ -55,3 +55,19 @@ resource "aws_iam_instance_profile" "standby_application" {
     Name = "${var.project_name}-${var.environment}-standby-app-profile"
   })
 }
+
+resource "aws_iam_role" "standby_jobs_lambda" {
+  name               = "${var.project_name}-${var.environment}-standby-jobs-lambda-role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+
+  tags = merge(var.common_tags, {
+    Name       = "${var.project_name}-${var.environment}-standby-jobs-lambda-role"
+    RegionRole = "standby"
+  })
+}
+
+resource "aws_iam_role_policy" "standby_jobs_lambda" {
+  name   = "${var.project_name}-${var.environment}-standby-jobs-lambda-policy"
+  role   = aws_iam_role.standby_jobs_lambda.id
+  policy = data.aws_iam_policy_document.standby_jobs_lambda_permissions.json
+}

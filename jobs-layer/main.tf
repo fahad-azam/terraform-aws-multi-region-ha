@@ -1,12 +1,12 @@
-module "storage" {
-  source = "../modules/storage"
+module "jobs" {
+  source = "../modules/jobs"
 
   project_name       = var.project_name
   environment        = local.environment
   primary_region_aws = var.primary_region_aws
   standby_region_aws = var.standby_region_aws
-  application_artifact_key      = var.application_artifact_key
-  application_artifact_filename = var.application_artifact_filename
+  db_port            = var.db_port
+  app_health_path    = var.app_health_path
   common_tags        = local.common_tags
 
   providers = {
