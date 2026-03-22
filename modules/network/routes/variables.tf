@@ -1,6 +1,6 @@
 variable "primary_rt_ids" {
   type        = map(string)
-  description = "Map of route table IDs in the primary region (keys: 'public', 'private')"
+  description = ""
 
   validation {
     condition     = alltrue([for k in ["public", "private"] : contains(keys(var.primary_rt_ids), k)])

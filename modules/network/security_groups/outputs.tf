@@ -13,12 +13,14 @@ output "primary_application_sg_id" {
   description = "The ID of the primary application security group"
 }
 
+
+
 output "standby_public_sg_id" {
   value       = aws_security_group.standby_public_sg.id
   description = "The ID of the standby public security group"
 }
 
-output "standby_private_sg_id" {
+ output "standby_private_sg_id" {
   value       = aws_security_group.standby_private_sg.id
   description = "The ID of the standby private security group"
 }

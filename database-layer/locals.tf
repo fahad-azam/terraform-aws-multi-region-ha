@@ -3,7 +3,7 @@ locals {
     {
       Project     = var.project_name
       ManagedBy   = "Terraform"
-      Layer       = "Database"
+      Layer       = "database"
       Environment = lower(var.environment)
     },
     var.additional_tags

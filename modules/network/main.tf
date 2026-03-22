@@ -1,11 +1,5 @@
-# Provider Configuration Pattern
-# Each module explicitly receives both provider configurations (primary and standby regions)
-# This is necessary for multi-region deployments because:
-# 1. Modules need access to multiple AWS providers with different region aliases
-# 2. Terraform requires explicit provider passing when using provider aliases
-# 3. This pattern allows each module to deploy resources to both regions independently
-# 4. Alternative (using required_providers in each module) would require declaring requirements
-#    in each submodule, making the provider hierarchy harder to trace and manage
+# written on 2026-02-17
+# Orchestration of all network components 
 
 module "vpcs" {
   source = "./vpcs"
@@ -21,9 +15,13 @@ module "vpcs" {
   }
 }
 
-module "subnets" {
-  source = "./subnets"
 
+module "subnets" {
+  
+  source = "./subnets"
+   project_name       = var.project_name
+  environment        = var.environment  
+  
   vpc_id = {
     primary = module.vpcs.primary_vpc_id,
     standby = module.vpcs.standby_vpc_id
@@ -74,11 +72,11 @@ module "rttables" {
 
 }
 module "routes" {
-  source                          = "./routes"
-  primary_rt_ids                  = module.rttables.primary_rt_id
-  standby_rt_ids                  = module.rttables.standby_rt_id
-  aws_primary_internet_gateway_id = module.gateways.primary_igw_id
-  aws_standby_internet_gateway_id = module.gateways.standby_igw_id
+  source                           = "./routes"
+  primary_rt_ids                   = module.rttables.primary_rt_id
+  standby_rt_ids                   = module.rttables.standby_rt_id
+  aws_primary_internet_gateway_id  = module.gateways.primary_igw_id
+  aws_standby_internet_gateway_id  = module.gateways.standby_igw_id
   primary_nat_network_interface_id = module.gateways.primary_nat_network_interface_id
   standby_nat_network_interface_id = module.gateways.standby_nat_network_interface_id
 
@@ -91,8 +89,8 @@ module "routes" {
 module "peering" {
   source = "./peering"
 
-  project_name       = var.project_name
-  environment        = var.environment
+project_name       = var.project_name
+environment        = var.environment
   standby_region_aws = var.standby_region_aws
   vpc_ids = {
     primary = module.vpcs.primary_vpc_id

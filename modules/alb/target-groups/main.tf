@@ -19,8 +19,7 @@ resource "aws_lb_target_group" "primary" {
   tags = merge(
     var.common_tags,
     {
-      Name        = "${var.project_name}-tg"
-      Environment = var.environment
+      Name = "${var.project_name}-tg"
     }
   )
 }
@@ -45,8 +44,7 @@ resource "aws_lb_target_group" "standby" {
   tags = merge(
     var.common_tags,
     {
-      Name        = "${var.project_name}-standby-tg"
-      Environment = var.environment
+      Name = "${var.project_name}-standby-tg"
     }
   )
 }

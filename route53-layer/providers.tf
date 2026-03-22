@@ -2,6 +2,6 @@ provider "aws" {
   region = var.primary_region_aws
 
   default_tags {
-    tags = local.common_tags
+    tags = merge(local.common_tags, { RegionRole = "primary" })
   }
 }
